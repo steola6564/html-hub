@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ページ目録｜書架</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #fffefa;
+      --ink: #183d5e;
+      --muted: #536875;
+      --line: #ccd8db;
+      --red: #a64138;
+      --serif: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif CJK JP", Georgia, serif;
+      --sans: system-ui, -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 1rem/1.65 var(--sans); }
+    .wrap { max-width: 58rem; margin: 0 auto; padding: 0 clamp(1.25rem, 5vw, 3rem); }
+    header { border-bottom: 1px solid var(--line); }
+    header .wrap, .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+    header .wrap { align-items: center; min-height: 4rem; }
+    .brand { display: flex; align-items: center; gap: .7rem; font: 600 1.1rem var(--serif); letter-spacing: .1em; }
+    .brand::before { content: ""; width: .65rem; height: .65rem; border: 3px solid var(--paper); border-radius: 50%; background: var(--red); outline: 1px solid var(--red); }
+    .edition, .kicker { font: 600 .7rem/1.4 var(--sans); letter-spacing: .15em; }
+    .edition { color: var(--muted); }
+    .intro { padding: clamp(2.8rem, 8vw, 5rem) 0 clamp(2rem, 5vw, 3rem); }
+    .kicker { display: flex; align-items: center; gap: .7rem; color: var(--red); }
+    .kicker::before { content: ""; width: 1.8rem; height: 2px; background: currentColor; }
+    h1 { margin: .55rem 0 0; font: 600 clamp(2.35rem, 7vw, 3.8rem)/1.35 var(--serif); letter-spacing: .05em; }
+    .section-head { padding-bottom: .65rem; border-bottom: 2px solid var(--ink); }
+    h2 { margin: 0; font-size: .9rem; letter-spacing: .07em; }
+    .count, .filename { color: var(--muted); font-size: .8rem; }
+    .count { font-variant-numeric: tabular-nums; }
+    ul { padding: 0; margin: 0 0 4rem; list-style: none; counter-reset: entry; }
+    li { border-bottom: 1px solid var(--line); counter-increment: entry; }
+    .page { display: grid; grid-template-columns: 2.5em minmax(0, 1fr) auto; align-items: center; gap: clamp(.6rem, 2vw, 1.2rem); padding: 1.25rem .5rem; color: inherit; text-decoration: none; }
+    .page:hover, .page:focus-visible { background: #eff4f4; }
+    .page:hover strong, .page:focus-visible strong { text-decoration: underline; text-underline-offset: .18em; }
+    .page:focus-visible { outline: 2px solid #1a5787; outline-offset: 2px; }
+    .number { color: var(--red); font: italic 1.35rem/1 Georgia, serif; }
+    .number::before { content: counter(entry, decimal-leading-zero); }
+    .details { overflow-wrap: anywhere; }
+    .details strong { display: block; font: 600 clamp(1.25rem, 3.2vw, 1.65rem)/1.45 var(--serif); }
+    .filename { display: block; margin-top: .25rem; font-family: ui-monospace, monospace; }
+    .arrow { font-size: 1.25rem; }
+    .empty { color: var(--muted); padding: 1.4rem .5rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <span class="brand">書架</span>
+      <span class="edition" lang="en">HTML LIBRARY</span>
+    </div>
+  </header>
+  <main class="wrap">
+    <div class="intro">
+      <span class="kicker" lang="en">CATALOGUE</span>
+      <h1>ページ目録</h1>
+    </div>
+    <section aria-labelledby="pages-heading">
+      <div class="section-head">
+        <h2 id="pages-heading">収録ページ</h2>
+        <span class="count">{{len .}} 件</span>
+      </div>
+      <ul role="list">
+        {{range .}}
+        <li>
+          <a class="page" href="{{.URL}}">
+            <span class="number" aria-hidden="true"></span>
+            <span class="details"><strong>{{.Label}}</strong><span class="filename">{{.Name}}</span></span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+        {{else}}
+        <li class="empty">まだページがありません。<code>pages/</code> に HTML ファイルを追加すると、ここに表示されます。</li>
+        {{end}}
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
